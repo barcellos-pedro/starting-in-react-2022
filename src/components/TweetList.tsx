@@ -1,21 +1,25 @@
-import { Tweet } from "../App";
-import { TweetItem } from "./TweetItem";
+import { Link } from "react-router-dom";
+import { Tweet } from "../pages/Tweets";
 
 type TweetListProps = {
   items: Tweet[];
-  children?: React.ReactNode;
 };
 
-export function TweetList({ items, children }: TweetListProps) {
+export function TweetList({ items }: TweetListProps) {
   return (
-    <>
-      {children}
-
-      <div>
-        {items.map((item) => (
-          <TweetItem text={item.text} key={item.id} />
-        ))}
-      </div>
-    </>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: "1em",
+        marginBottom: "1em",
+      }}
+    >
+      {items.map((item) => (
+        <Link to={`/tweets/${item.id}`} key={item.id}>
+          {item.text}
+        </Link>
+      ))}
+    </div>
   );
 }

@@ -1,18 +1,20 @@
+import { Button } from "./Button";
+import { Input } from "./Input";
+
 type TweetFormProps = {
   value: string;
-  onChange: (value: any) => void;
   onSubmit: () => void;
+  onInputChange: (value: any) => void;
 };
 
-export function TweetForm({ value, onChange, onSubmit }: TweetFormProps) {
-  function handleChange(e: any) {
-    onChange(e.target.value);
-    e.preventDefault();
+export function TweetForm({ value, onSubmit, onInputChange }: TweetFormProps) {
+  function handleInputChange(event: any) {
+    onInputChange(event);
   }
 
   function handleSubmit(e: any) {
-    e.preventDefault();
     onSubmit();
+    e.preventDefault();
   }
 
   return (
@@ -20,16 +22,22 @@ export function TweetForm({ value, onChange, onSubmit }: TweetFormProps) {
       <label htmlFor="tweet">Create e tweet</label>
       <br />
       <br />
-      <input
+      <Input
         id="tweet"
-        type="text"
-        placeholder="Tweet something"
+        placeholder="Digite um tweet"
         value={value}
-        onChange={handleChange}
+        onInputChange={handleInputChange}
       />
-      <button typeof="button" style={{ marginLeft: "1em" }}>
+      <Button type="submit" style={styles.button}>
         Tweet
-      </button>
+      </Button>
     </form>
   );
 }
+
+const styles = {
+  button: {
+    marginLeft: "1em",
+    backgroundColor: "#1a8cd8",
+  },
+};
