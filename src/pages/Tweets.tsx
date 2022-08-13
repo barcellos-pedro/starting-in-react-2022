@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Outlet } from "react-router-dom";
 
 import { Button } from "../components/Button";
 import { TweetForm } from "../components/TweetForm";
 import { TweetList } from "../components/TweetList";
-import { tweetService } from "../services/TweetsService";
+import { useTweets } from "../hooks/UseTweets";
 
 export type Tweet = {
   id: number;
@@ -12,39 +12,42 @@ export type Tweet = {
 };
 
 export function Tweets() {
-  const [tweets, setTweets] = useState<Tweet[]>([]);
+  const { createTweet, fetchData, tweets, error, clearTweets } = useTweets();
   const [post, setPost] = useState<string>("");
+  const tweetsCount = tweets.length;
 
-  let tweetsCount = tweets.length;
-
-  async function fetchData() {
-    console.log("fetch");
-    try {
-      let { data } = await tweetService.getTweets();
-      setTweets(data);
-    } catch (err) {
-      console.log(err);
-    }
+  function isPostEmpty() {
+    return !post.trim();
   }
 
-  useEffect(() => {
-    fetchData();
-  }, [tweetsCount]);
-
-  function handleTweetChange(event: React.ChangeEvent<HTMLInputElement>) {
-    const value = event.target.value.trim();
+  function handleInputChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const value = event.target.value;
     setPost(value);
   }
 
   async function handleSubmit() {
-    try {
-      const newTweet = { id: tweetsCount + 1, text: post };
-      await tweetService.createTweet(newTweet);
-      setTweets([...tweets, newTweet]);
+    if (isPostEmpty()) {
       setPost("");
+      return;
+    }
+
+    try {
+      await createTweet({ id: tweetsCount + 1, text: post });
+      await fetchData(); // updates the list
+      setPost(""); // clears the input
     } catch (err) {
       console.log(err);
     }
+  }
+
+  // if api fetch gets error
+  if (error) {
+    return (
+      <div>
+        <h1>Error to load tweets</h1>
+        <button onClick={() => fetchData()}>Try again</button>
+      </div>
+    );
   }
 
   return (
@@ -55,12 +58,12 @@ export function Tweets() {
       <TweetForm
         value={post}
         onSubmit={handleSubmit}
-        onInputChange={handleTweetChange}
+        onInputChange={handleInputChange}
       />
 
       <br />
 
-      <Button style={styles.button} type="button" onClick={() => setTweets([])}>
+      <Button style={styles.button} type="button" onClick={() => clearTweets()}>
         Clear tweets
       </Button>
 

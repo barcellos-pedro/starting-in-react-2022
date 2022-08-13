@@ -16,7 +16,7 @@ export function AppRoutes() {
           <Route path="cart" element={<Cart />} />
           <Route path="catalog" element={<Catalog />} />
           <Route path="/tweets" element={<Tweets />} />
-          <Route path="/tweet/:tweetId" element={<SingleTweet />} />
+          <Route path="/tweets/:tweetId" element={<SingleTweet />} />
         </Route>
         <Route
           path="*"

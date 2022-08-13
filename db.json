@@ -2,11 +2,19 @@
   "tweets": [
     {
       "id": 1,
-      "text": "asdasdas"
+      "text": "asd"
     },
     {
       "id": 2,
-      "text": "adadasda"
+      "text": "asdas"
+    },
+    {
+      "id": 3,
+      "text": "adsas"
+    },
+    {
+      "id": 4,
+      "text": "asdasda"
     }
   ]
 }

@@ -1,4 +1,3 @@
-import "./App.css"; // Global style
 import { NavLink, Outlet } from "react-router-dom";
 
 export function App() {

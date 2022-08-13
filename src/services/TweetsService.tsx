@@ -18,6 +18,6 @@ export const tweetService = {
     return apiClient.get(`/tweets/${id}`);
   },
   createTweet(tweet: Tweet) {
-    return apiClient.post("tweets/", tweet);
+    return apiClient.post("/tweets", tweet);
   },
 };
